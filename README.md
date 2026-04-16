@@ -2,7 +2,7 @@
 
 An AI-powered discovery partner that guides business users through scoping an AI project — from first conversation to a downloadable Decision Package — without requiring any technical knowledge.
 
-Built with Next.js 14 (App Router), Tailwind CSS, and pluggable LLM providers:
+Built with Next.js 16 (App Router), Tailwind CSS, and pluggable LLM providers:
 
 - Anthropic
 - OpenAI
@@ -13,7 +13,7 @@ Built with Next.js 14 (App Router), Tailwind CSS, and pluggable LLM providers:
 
 ## Prerequisites
 
-- Node.js 18 or higher
+- Node.js 20.9 or higher
 - API credentials for at least one supported provider
 
 ---
@@ -69,6 +69,32 @@ GEMINI_MODEL=gemini-2.0-flash
    npm run dev
    ```
    Open [http://localhost:3000](http://localhost:3000). Pathfinder will greet you automatically.
+
+---
+
+## Azure App Service
+
+If App Service starts the app with `npm start` and logs `sh: 1: next: not found`, the deployment did not leave a usable local `next` binary under `node_modules/.bin`. For this project, the usual causes are an incompatible Node runtime on App Service or a deployment that skipped the install/build step.
+
+Use these settings for Linux App Service:
+
+- Node stack: `20 LTS`
+- Startup command: leave blank, or use `npm start`
+- App setting: `SCM_DO_BUILD_DURING_DEPLOYMENT=true`
+
+Verification steps after deployment:
+
+```bash
+npm install
+npm run build
+```
+
+If you deploy with Zip Deploy or external CI, make sure the deployment artifact is either:
+
+- the full app source so App Service can run the Oryx build, or
+- a prebuilt package that includes the production dependencies required by `next start`
+
+Do not rely on a local `.next` or `node_modules` folder being copied from your workstation.
 
 ---
 
